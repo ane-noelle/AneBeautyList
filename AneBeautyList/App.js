@@ -36,33 +36,35 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Ane Beauty List 💄</Text>
+      <View style={styles.homeScreen}>
+        <Text style={styles.title}>Ane Beauty List 💄</Text>
 
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Adicionar produto..."
-          style={styles.input}
-          value={newItem}
-          onChangeText={setNewItem}
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Adicionar produto..."
+            style={styles.input}
+            value={newItem}
+            onChangeText={setNewItem}
+          />
+          <TouchableOpacity onPress={handleAddItem} style={styles.addButton}>
+            <Text style={styles.addButtonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+
+        <FlatList
+          contentContainerStyle={styles.listContent}
+          data={items}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.item}>
+              <Text style={styles.itemText}>{item.name}</Text>
+              <TouchableOpacity onPress={() => handleRemoveItem(item.id)}>
+                <Text style={styles.removeButton}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         />
-        <TouchableOpacity onPress={handleAddItem} style={styles.addButton}>
-          <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
       </View>
-
-      <FlatList
-        contentContainerStyle={styles.listContent}
-        data={items}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.itemText}>{item.name}</Text>
-            <TouchableOpacity onPress={() => handleRemoveItem(item.id)}>
-              <Text style={styles.removeButton}>✕</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      />
     </SafeAreaView>
   );
 }
@@ -77,6 +79,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+    paddingTop: 100, // <-- aqui abaixei mais o conteúdo
+  },
+  homeScreen: {
+    flex: 1,
+    paddingTop: 80, // <-- espaço no topo da tela principal também
+    paddingHorizontal: 16,
   },
   title: {
     fontSize: 36,
@@ -92,7 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   startButton: {
-    backgroundColor: "#f9a8d4", // Rosa claro para o botão
+    backgroundColor: "#f9a8d4",
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 10,
@@ -104,7 +112,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    paddingHorizontal: 16,
     marginBottom: 16,
   },
   input: {
@@ -127,7 +134,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   listContent: {
-    paddingHorizontal: 16,
     paddingBottom: 20,
   },
   item: {
